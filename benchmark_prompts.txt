@@ -59,7 +59,7 @@ Cross-Encoder Re-Ranking
 After fetching the top-K candidates from FAISS, run them through a transformer cross-encoder to compute fine-grained pairwise similarity scores and reorder the results by those refined scores for improved ranking quality.
 
 Pluggable ANN Backend
-Introduce a runtime choice of ANN library (e.g. PyNNDescent or ScaNN) via a configuration flag, abstract the index-build and search calls behind that flag, and ensure the rest of the pipeline seamlessly dispatches to the selected backend.
+Introduce a runtime choice of ANN library via a configuration flag, abstract the index-build and search calls behind that flag, and ensure the rest of the pipeline seamlessly dispatches to the selected backend. Introduce an ANN model into this pipeline, so the user can change between FAISS and this new ANN model.  
 
 System-Wide Logging
 Replace print calls with structured OpenTelemetry spans: centralize tracer setup and wrap key operations (embedding, indexing, search) so that each pipeline stage emits timing and attribute metadata for end-to-end observability.
