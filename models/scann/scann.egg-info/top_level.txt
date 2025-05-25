@@ -1,4 +1,0 @@
-build_deps
-docs
-scann
-tf_serving
