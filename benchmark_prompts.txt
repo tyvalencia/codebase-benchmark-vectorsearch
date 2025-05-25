@@ -34,10 +34,10 @@ README.md                # this documentation
 
 I’m supplying these files as attachments: requirements.txt, logging.py, main.py, config.py, util.py, embeddings.py, index.py, search.py, calculate_results.py, and plot_results.py. 
 
-The project currently indexes the dev split’s sentence1 entries as the corpus, runs ANN search on sentence2, computes Recall@1,2,5,10,15,20,50 and regression metrics, and can save & plot results. The data format is : index, genre, filename, year, old_index, source1, source2, sentence1, sentence2, score. It yields the following metrics with the baseline functionality:
+The project currently indexes the dev split’s sentence1 entries as the corpus, runs ANN search on sentence2, computes Recall at 1, 2, 5, 10, 15, 20 and regression metrics, and can save & plot results. The data format is : index, genre, filename, year, old_index, source1, source2, sentence1, sentence2, score. It yields the following metrics with the baseline functionality:
 
 Recall at K: (1: 0.571, 2: 0.633, 5: 0.707, 10: 0.707, 15: 0.707, 20: 0.707)
-PearsonR: 0.8578578683879271, Mean Squared Error: 4.789874304898033
+PearsonR: 0.858, Mean Squared Error: 4.790
 
 
 Your task:
@@ -45,7 +45,7 @@ Modify the codebase to add a few feature - <feature>.
 <feature description>
 
 
-List exactly which files should be updated and provide me with updated files that I can test for functionality.
+List exactly which files should be updated, and provide me with updated files that I can test for functionality.
 
 
 
