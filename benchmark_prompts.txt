@@ -1,0 +1,68 @@
+--- Prompt template ---
+
+I am working on an ML similarity search model built on the STS benchmark. The project covers the following concepts:
+
+1. Generates sentence embeddings using BERT
+2. Builds and queries FAISS to create an index using the dev.tsv sentence1 entries for ANN search 
+3. Evaluates retrieval by using the dev.tsv sentence2 entries as queries at varying Ks 
+4. Evaluates embedding quality against human similarity scores by using Pearson correlation and Mean Squared Error
+5. Visualizes the results
+
+With this directory layout:
+
+analysis/
+  calculate_results.py   # computes recall and regression
+  plot_results.py        # matplotlib implementation
+  metrics.json           # metrics in json form
+  metrics.png            # plotted results
+dat/
+  dev.tsv                # dev split
+  train.tsv              # train split
+  test.tsv               # test split 
+  index.faiss            # where FAISS stores its index
+src/
+  config.py              # constants and paths
+  util.py                # helper functions for loading data
+  embeddings.py          # BERT embeddings creation
+  index.py               # FAISS index creation
+  logging.py             # logging output
+  main.py                # code orchestrator, run this 
+  search.py              # top results
+  __init__.py
+requirements.txt         # imports to install
+README.md                # this documentation
+
+I’m supplying these files as attachments: requirements.txt, logging.py, main.py, config.py, util.py, embeddings.py, index.py, search.py, calculate_results.py, and plot_results.py. 
+
+The project currently indexes the dev split’s sentence1 entries as the corpus, runs ANN search on sentence2, computes Recall@1,2,5,10,15,20,50 and regression metrics, and can save & plot results. The data format is : index, genre, filename, year, old_index, source1, source2, sentence1, sentence2, score. It yields the following metrics with the baseline functionality:
+
+Recall at K: (1: 0.571, 2: 0.633, 5: 0.707, 10: 0.707, 15: 0.707, 20: 0.707)
+PearsonR: 0.8578578683879271, Mean Squared Error: 4.789874304898033
+
+
+Your task:
+Modify the codebase to add a few feature - <feature>. 
+<feature description>
+
+
+List exactly which files should be updated and provide me with updated files that I can test for functionality.
+
+
+
+
+--- List of benchmark tasks ---
+
+Hybrid Retrieval (FAISS + BM25). 
+Build a term-based BM25 index alongside the existing FAISS vector index, then combine BM25 scores and vector similarities via a configurable weighted sum to boost retrieval precision on queries that mix keyword and semantic signals.
+
+Cross-Encoder Re-Ranking
+After fetching the top-K candidates from FAISS, run them through a transformer cross-encoder to compute fine-grained pairwise similarity scores and reorder the results by those refined scores for improved ranking quality.
+
+Pluggable ANN Backend
+Introduce a runtime choice of ANN library (e.g. PyNNDescent or ScaNN) via a configuration flag, abstract the index-build and search calls behind that flag, and ensure the rest of the pipeline seamlessly dispatches to the selected backend.
+
+System-Wide Logging
+Replace print calls with structured OpenTelemetry spans: centralize tracer setup and wrap key operations (embedding, indexing, search) so that each pipeline stage emits timing and attribute metadata for end-to-end observability.
+
+Global Seed Reproducibility
+Add a global --seed argument (or environment variable) to initialize all random number generators (Python, NumPy, PyTorch, etc.), and include tests that verify two runs with the same seed produce identical embeddings, index contents, and search outputs.

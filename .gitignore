@@ -1,0 +1,44 @@
+# Byte-compiled and cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+env/
+venv/
+.venv/
+
+# Conda environment
+environment.yml
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data and outputs
+dat/index.faiss
+analysis/metrics.json
+analysis/metrics.png
+
+# Logs and runtime files
+*.log
+*.pid
+*.seed
+
+# macOS
+.DS_Store
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Python test artifacts
+htmlcov/
+.coverage
+.pytest_cache/
+
+# Misc
+.env
