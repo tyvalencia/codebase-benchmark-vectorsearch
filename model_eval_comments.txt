@@ -1,0 +1,297 @@
+LLM Evaluation Comments
+
+LLM               Files Edited
+Claude 3.7 Sonnet 35
+Gemini Pro 2.5    21
+DeepSeek R1       22
+OpenAI 4o         20
+Claude 4.0 Sonnet 26
+
+
+1. **Hybrid Retrieval**
+
+Claude 3.7 Sonnet
+Changed:
+requirements.py
+config.py
+bm25_index.py (new)
+hybrid_search.py (new)
+index.py
+search.py
+main.py
+
+Claude provided a lot of code and ran out of time in one response, so I had to prompt it to continue in the second one. Tried to implement annoy as well which it wasn’t asked for, and the logic didn’t end up working with the parser and all the files. 
+
+
+Claude 4.0 Sonnet
+Changed:
+Requirements.txt
+config.py
+index.py
+main.py
+search.py
+
+Full-file changes. Index.py implemented the hybrid search. Was close, but had some logic issues, like mapping results to sentences and a circular logging issue. 
+
+
+Gemini Pro 2.5
+Changed:
+Requirements.txt
+config.py
+index.py
+main.py
+search.py
+
+Added full files for easy pasting instead of snippets. Included a lot of descriptive comments for BM25. Seemed pretty close, but ran into a ValueError:
+dev_pairs = [(s1, s2) for s1, s2, _ in dev_rows] 
+And then:
+queries_s2 = [s2 for _, s2, _ in dev_pairs] (expected 3, got 2)
+Fixing this allowed it to run. Recall slightly went down, but no notable metric changes. 
+
+
+DeepSeek R1
+Changed:
+Requirements.txt
+config.py
+bm25_index.py (new)
+main.py
+search.py
+
+Variables didn’t exactly line up, and added some extra work. Logic is close, but it wasn’t too close to compiling. For example, it changed code involving the dev_pairs variable and then forgot to define it later. 
+
+
+OpenAI 4o
+Changed:
+requirements.txt
+config.py
+bm25.py (new)
+main.py
+search.py
+
+Initially updated the search file by changing the search function to a hybrid search function, but imported both in main even though the regular search function no longer exists, resulting in an ImportError. It was able to run after that small error. Intuitive fix. No noticeable metric changes. 
+
+
+2. **Cross-Encoder Re-Ranking**
+
+Claude 3.7 Sonnet
+Changed:
+requirements.txt
+config.py
+reranker.py (new)
+search.py
+index.py
+main.py
+plot_results.py
+
+Gave me a cross-encoder==0.1.10 import that didn’t exist. Generated way too much code in comparison to the other LLMs, and while it doesn’t have too many visible errors, it doesn’t end up working. Fixing the import issue gave me some TypeError. 
+
+
+Claude 4.0 Sonnet
+Changed:
+Requirements.txt
+config.py
+reranker.py (new)
+search.py
+main.py
+
+Code worked properly. Slight improvements in early recall values. Very impressive. Search took 146.15 seconds.
+
+
+Gemini Pro 2.5
+Changed:
+config.py
+main.py
+
+Added a lot of logic to main.py. No noticeable improvements in recall values. Search took 69.05 seconds. 
+
+
+DeepSeek R1
+Changed: 
+config.py
+embeddings.py
+main.py
+
+Had some formatting issues. Inputted file instead of __file__ in config. No noticeable improvements in recall values. Search took 129.55 seconds. 
+
+
+OpenAI 4o
+Changed:
+Requirements.txt
+config.py
+search.py
+main.py
+
+Only gives the changes, unlike the rest who return the entire updated files. No noticeable improvements in recall values. Didn’t give me updated code to track how long the re-ranking took, took around ~100 seconds. 
+ 
+
+3. **Pluggable ANN Backend**
+
+Claude 3.7 Sonnet
+Changed:
+ann_backends.py (new)
+config.py
+index.py
+main.py
+search.py
+
+Claude went for annoy, but did not add it in the requirements.txt file. Even if it did, it still had some errors in its code, like an undeclared distances variable in main. 
+
+
+Claude 4.0 Sonnet
+Changed:
+requirements.py
+config.py
+index.py
+main.py
+search.py
+
+Models provided: Annoy and hnswlib. Gave me a flag with the choice of the 3. Faiss worked as expected, annoy and hnswlib worked seamlessly with similar metrics to Faiss. No errors. 
+
+
+Gemini Pro 2.5
+Changed:
+requirements.py
+config.py
+Ann_backends.py (new)
+main.py
+calculate_results.py
+search.py
+
+Gave me a version of scann(1.2.9), that didn’t exist. Had some other errors, like using np.float32 in main while forgetting to import numpy. Tried with annoy too and had the same issues.
+
+
+DeepSeek R1
+Changed:
+config.py
+index.py
+main.py
+requirements.txt
+search.py 
+
+DeepSeek refactored the index file to make many new classes, of which had actual syntax errors, and many undefined variables. The formatting it provided to make changes is not very user-friendly either, and the code didn’t end up compiling. Ended up trying to implement annoy. 
+
+
+OpenAI 4o
+Changed:
+config.py
+index.py
+requirements.txt
+main.py
+
+Different way of thinking, sometimes only tells you what to replace vs the whole file. Implemented sklearn's NearestNeighbors with cosine similarity. However, since it implemented only portions of the file, it failed to check for variables elsewhere, resulting in errors. 
+
+
+4. **System-Wide Logging**
+
+Claude 3.7 Sonnet
+Changed:
+requirements.txt
+logger.py
+main.py
+embeddings.py
+index.py
+search.py
+calculate_results.py
+plot_results.py
+util.py
+
+Claude evaluated basically every file, and I ran into multiple different AttributeErrors when running my logging commands. 
+
+
+Claude 4.0 Sonnet
+Changed:
+requirements.txt 
+logger.py
+embeddings.py 
+index.py
+search.py 
+main.py 
+Calculate_results.py
+
+There was one small error in main, where it had log_error instead of log_info. It also gave me a wrong installation of OpenTelemetry (opentelemetry-exporter-console==1.21.0), but it was fixed easily. It ended up giving detailed results. 
+
+
+Gemini Pro 2.5
+Changed:
+requirements.txt
+logger.py
+embeddings.py
+index.py
+main.py
+
+No compile errors. It provided a different version of OpenTelemetry (opentelemetry-exporter-logging==0.46b), which I fixed. It ran, but returned a TypeError halfway through, so it wasn’t able to run the whole pipeline. 
+
+
+DeepSeek R1
+Changed:
+requirements.txt
+telemetry.py
+main.py
+embeddings.py
+index.py
+
+Generated cohesive code this time, no formatting issues. Provided detailed logging. 
+
+
+OpenAI 4o
+Changed:
+logger.py
+main.py
+search.py
+index.py
+embeddings.py
+
+The first iteration, GPT tried giving me a downloadable link with the updated files instead of entering in chat or on the canvas, but clicking on the link gave me an error that the file was not found. It did the same process on the second time, but all the files were split, and they downloaded correctly. However, it had multiple issues with indenting when giving me these downloadable files, resulting in errors. I generated it again for it to provide the usual code response in the chat, and this time, it gave a torch-related error.  
+
+
+5. **Global Seed Reproducibility**
+
+Claude 3.7 Sonnet
+Changed:
+util.py
+main.py
+config.py
+Test_reproducibility.py (new) 
+search.py
+embeddings.py
+Ann_backends.py (new)
+
+Claude generated all this code, but then hallucinated that there were more functions in index.py and tried calling them. I even nudged it and told it that it was missing those functions, to which it gave me them, and it still ran into other errors like an AttributeError with searcher.  
+
+
+Claude 4.0 Sonnet
+Changed:
+util.py 
+embeddings.py
+main.py 
+Test_reproducibility.py (new)
+
+Implemented the seed checks throughout the code. Worked as expected. Seeds were consistent throughout the code. 
+
+
+Gemini Pro 2.5
+Changed:
+main.py
+util.py
+Test_reproducibility.py (new)
+
+Gemini’s implementation had some issues with my MacOS, so I had to ask it to add extra code to clean that up, but it ended up providing valid seed corrections. 
+
+
+DeepSeek R1
+Changed:
+util.py
+embeddings.py
+main.py
+Test_reproducability.py (new)
+
+DeepSeek forgot to import csv in the util file, which is a pretty clear mistake. Besides that, it had an issue with its test_reproducibility file, where it got directories wrong. 
+
+
+OpenAI 4o
+Changed:
+util.py
+main.py
+test_seed_reproducibility.py (new)
+
+I had some segmentation fault issue, due to my MacBook Pro 2019, which still has an Intel chip. I’m planning on switching to a Mac with an M4 Max chip, which would yield easier results. The test_seed_reproducibility file gave no errors and checked the similarity which was good.

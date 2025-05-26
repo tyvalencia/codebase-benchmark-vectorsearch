@@ -33,7 +33,7 @@ src/
   util.py                # helper functions for loading data
   embeddings.py          # BERT embeddings creation
   index.py               # FAISS index creation
-  logging.py             # logging output
+  logger.py             # logging output
   main.py                # code orchestrator, run this 
   search.py              # top results
   __init__.py
@@ -122,8 +122,6 @@ Repo folder: `requirements.txt` <br>
 
 ## References 
 
-Dataset from GLUEBenchmark (Semantic Textual Similarity Benchmark): <br>
-https://gluebenchmark.com/tasks/
+[Dataset from GLUEBenchmark (Semantic Textual Similarity Benchmark)](https://gluebenchmark.com/tasks/) 
 
-ScaNN implementation: <br>
-https://github.com/google-research/google-research/blob/master/scann/docs/example.ipynb
+[LLM Chatbot Arena](https://lmarena.ai/)
