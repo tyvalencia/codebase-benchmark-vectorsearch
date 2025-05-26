@@ -1,4 +1,5 @@
-LLM Evaluation Comments
+LLM Evaluation Comments 5/25/25
+All changes made by each model are saved as individual Git stashes labeled by <model> <benchmark>
 
 LLM               Files Edited
 Claude 3.7 Sonnet 35
